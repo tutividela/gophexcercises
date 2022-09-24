@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<body>
+<h1>{{.Title}}</h1>
+<div>
+    {{range .Story}}
+    <p>{{.}}</p>
+    {{else}}
+    <p>There's no Story!</p>
+    {{end}}
+</div>
+<ul>
+    {{range .Options}}
+    <div>
+        <p>{{.Text}}</p>
+        <a href="http://localhost:8080/{{.ChapterTitle}}">{{.ChapterTitle}}</a>
+    </div>
+    {{else}}
+    <p>End of the Story!</p>
+    {{end}}
+</ul>
+</body>
