@@ -1,16 +1,16 @@
 package main
 
 import (
-	"HtmlParserMod/helpers"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 
+	"github.com/tutividela/gophexcercises/HtmlParser/helpers"
+
 	"golang.org/x/net/html"
 )
-
-
 
 func main() {
 	file ,err := os.Open("pages/ex4.html")
@@ -26,5 +26,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	helpers.SearchHtmlLinks(doc,"a")
+	links:=helpers.SearchHtmlLinks(doc,"a")
+	fmt.Printf("Links: %v\n",links)
 }
