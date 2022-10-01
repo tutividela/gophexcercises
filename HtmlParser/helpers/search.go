@@ -23,6 +23,7 @@ func SearchHtmlLinks(doc *html.Node, tag string)  []models.Link  {
 				}
 			}
 			GetTextContenFromNode(n,&hrefText)
+			hrefText = strings.TrimSpace(hrefText)
 			links = append(links, MapNodeToLink(hrefLink,hrefText))
 		}
 		

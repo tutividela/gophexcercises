@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	file ,err := os.Open("pages/ex4.html")
+	file ,err := os.Open("pages/ex2.html")
 	if err != nil {
 		log.Fatal("Open: ",err)
 	}
@@ -27,5 +27,7 @@ func main() {
 		log.Fatal(err)
 	}
 	links:=helpers.SearchHtmlLinks(doc,"a")
-	fmt.Printf("Links: %v\n",links)
+	for _,v := range links {
+		fmt.Printf("Link: %s , Text: %s \n",v.Href,v.Text)
+	}
 }
