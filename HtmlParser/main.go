@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	file ,err := os.Open("pages/ex2.html")
+	file ,err := os.Open("pages/ex5.html")
 	if err != nil {
 		log.Fatal("Open: ",err)
 	}

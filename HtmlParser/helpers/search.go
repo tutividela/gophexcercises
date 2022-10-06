@@ -23,8 +23,8 @@ func SearchHtmlLinks(doc *html.Node, tag string)  []models.Link  {
 				}
 			}
 			GetTextContenFromNode(n,&hrefText)
-			hrefText = strings.TrimSpace(hrefText)
-			links = append(links, MapNodeToLink(hrefLink,hrefText))
+			trimHrefText := strings.TrimSpace(hrefText)
+			links = append(links, MapNodeToLink(hrefLink,trimHrefText))
 		}
 		
 		for c := n.FirstChild; c != nil; c = c.NextSibling {
@@ -43,9 +43,11 @@ func MapNodeToLink(href,text string) models.Link {
 }
 
 func GetTextContenFromNode(n *html.Node,textNode *string) {
+	var text string
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		if c.Type == html.TextNode {
-			(*textNode) = strings.Join([]string{*textNode,c.Data}," ")
+			text = strings.TrimSpace(c.Data)
+			(*textNode) = strings.Join([]string{*textNode,text}," ")
 		}
 		GetTextContenFromNode(c,textNode)
 	}
