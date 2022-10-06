@@ -233,3 +233,39 @@ func Test05LinkWithHTMLTagAndTextInside(t *testing.T){
 		} 
 	}
 }
+
+func Test06LinkInsideLink(t *testing.T) {
+	tag := "a"
+	answers := make(map[string]string)
+	answers["/dog"] =""
+	answers["/im-inside"]="Hello world this is a B span!"
+
+	exLL :=`<a href="/dog">
+  <a href="/im-inside">
+    <p>
+        Hello world
+    </p>
+    <span>this is a <b>B</b> span! </span>
+  </a>
+</a>`
+	 
+	docExLL, err := html.Parse(strings.NewReader(exLL))
+	if err != nil {
+		log.Fatal(err)
+	}
+	links := helpers.SearchHtmlLinks(docExLL,tag)
+	
+	if len(links) != len(answers) {
+		t.Errorf("Expected lenght %d , got length %d",len(answers),len(links))
+	}
+	for _,v := range links {
+		a,ok := answers[v.Href]
+		if !ok {
+			t.Errorf("Missing Href %s \n",v.Href)
+		}
+		if a != v.Text{
+			t.Errorf("Expected %s , got %s",answers[v.Href],v.Text)
+		} 
+	}
+
+}

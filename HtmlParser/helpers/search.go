@@ -47,7 +47,9 @@ func GetTextContenFromNode(n *html.Node,textNode *string) {
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		if c.Type == html.TextNode {
 			text = strings.TrimSpace(c.Data)
-			(*textNode) = strings.Join([]string{*textNode,text}," ")
+			if len(text) > 0 {
+				(*textNode) = strings.Join([]string{*textNode,text}," ")
+			}
 		}
 		GetTextContenFromNode(c,textNode)
 	}
