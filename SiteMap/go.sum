@@ -1,0 +1,4 @@
+github.com/tutividela/gophexcercises/HtmlParser v0.0.0-20221006025938-61b6b8d622b2 h1:NMhng9s0N+hAv9iIR6lmlgLSyhz6BPdP/SMknyLU7ls=
+github.com/tutividela/gophexcercises/HtmlParser v0.0.0-20221006025938-61b6b8d622b2/go.mod h1:rXMxabRtVhud/ri59zIGxJwkUBAQK1hXEANcJcXXW7w=
+golang.org/x/net v0.0.0-20220909164309-bea034e7d591 h1:D0B/7al0LLrVC8aWF4+oxpv/m8bc7ViFfVS8/gXGdqI=
+golang.org/x/net v0.0.0-20220909164309-bea034e7d591/go.mod h1:YDH+HFinaLZZlnHAfSS6ZXJJ9M9t4Dl22yv3iI2vPwk=
