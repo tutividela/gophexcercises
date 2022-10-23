@@ -13,11 +13,11 @@ import (
 //Si no es vacio y es diferente a 'url' entonces no lo agrego.
 func GetBelongingLinksToMap(domain *url.URL , links []models.Link , m map[string]string) {
 	for _,v := range links {
-		StoreNonCyclicalUrls(v,m,domain)
+		storeNonCyclicalUrls(v,m,domain)
 	}
 }
 
-func CheckIfLinkIsRelativePath(link models.Link) bool {
+func checkIfLinkIsRelativePath(link models.Link) bool {
 	u,err := url.Parse(link.Href)
 	if err != nil {
 		log.Fatal("CheckIfLinkIsRelativePath: ",err)
@@ -26,7 +26,7 @@ func CheckIfLinkIsRelativePath(link models.Link) bool {
 	return u.Host == "" && u.Path != ""
 }
 
-func CheckIfLinkIsAbsoultePath(link models.Link,domain *url.URL) bool {
+func checkIfLinkIsAbsoultePath(link models.Link,domain *url.URL) bool {
 	u,err := url.Parse(link.Href)
 	if err != nil {
 		log.Fatal("CheckIfLinkIsRelativePath: ",err)
@@ -35,12 +35,12 @@ func CheckIfLinkIsAbsoultePath(link models.Link,domain *url.URL) bool {
 	return u.Host == domain.Host
 }
 
-func StoreNonCyclicalUrls(link models.Link , mapLinks map[string]string,domain *url.URL) {
+func storeNonCyclicalUrls(link models.Link , mapLinks map[string]string,domain *url.URL) {
 	if _,ok := mapLinks[link.Href]; !ok {
-		if CheckIfLinkIsRelativePath(link) {
+		if checkIfLinkIsRelativePath(link) {
 			mapLinks[link.Href] = strings.Join([]string{strings.TrimRight(domain.String(),"/"),link.Href},"")
 		}
-		if CheckIfLinkIsAbsoultePath(link,domain){
+		if checkIfLinkIsAbsoultePath(link,domain){
 			u,err := url.Parse(link.Href)
 			if err != nil {
 				log.Fatal("StoreNonCyclicalUrls: ",err)
@@ -49,7 +49,6 @@ func StoreNonCyclicalUrls(link models.Link , mapLinks map[string]string,domain *
 			mapLinks[u.Path] = link.Href
 		}
 	}else{
-		log.Println(link.Href," Already exists in mapLinks")
 		return
 	}
 
@@ -60,10 +59,17 @@ func CheckIfUrlExistsInHistoricMap(relativePath string,historicMap map[string]st
 	return ok
 }
 
-func CopyMapToMap(m1 ,m2 map[string]string) {
+func CopyUniqueValuesToMap(m1 ,m2 map[string]string) {
 	for i,v := range m1 {
 		if _,ok := m2[i];!ok {
 			m2[i]=v
+		}
+	}
+}
+func RemoveRepeatedValues(layerI1 ,historicMap map[string]string) {
+	for i := range layerI1 {
+		if _,ok := historicMap[i]; ok {
+			delete(layerI1,i)
 		}
 	}
 }
