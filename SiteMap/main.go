@@ -1,15 +1,21 @@
 package main
 
 import (
-	"fmt"
+	"encoding/xml"
 	"log"
+	"os"
 
 	htmlparser "github.com/tutividela/gophexcercises/HtmlParser/helpers"
+	"github.com/tutividela/gophexcercises/SiteMap/helpers"
 	sitemap "github.com/tutividela/gophexcercises/SiteMap/helpers"
 )
 
 func main() {
-	domain := "https://www.calhoun.io/"
+	if len(os.Args) <= 1 {
+		log.Fatalf("Expected 2 arguments , got %d",len(os.Args))
+		return
+	}
+	domain := os.Args[1]
 
 	resultMap := make(map[string]string)
 	historicMap := make(map[string]string)
@@ -32,8 +38,8 @@ func main() {
 				}
 				links := htmlparser.SearchHtmlLinks(doc,"a")
 				sitemap.GetBelongingLinksToMap(dom,links,layerI1)
-				sitemap.CopyMapToMap(layerI1,historicMap)
-				CleanMap(layerI1,historicMap)
+				sitemap.CopyUniqueValuesToMap(layerI1,historicMap)
+				sitemap.RemoveRepeatedValues(layerI1,historicMap)
 			}
 		}
 		return layerI1
@@ -43,16 +49,18 @@ func main() {
 	for len(nextLayer) > 0 {
 		nextLayer = ProcessLayer(nextLayer) 
 	}
-	for i,v := range historicMap {
-		fmt.Printf("Path: %s , Url : %s \n",i,v)
+	err := sitemap.CreateXMLFile("urlset.xml")
+	if err != nil {
+		log.Fatal(err)
 	}
-	
+	urlSet := helpers.MapToUrlSet(historicMap)
+	bs,err := xml.Marshal(urlSet)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = sitemap.WriteToXMLFile("urlset.xml",bs)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
-func CleanMap(layerI1 ,historicMap map[string]string) {
-	for i := range layerI1 {
-		if _,ok := historicMap[i]; ok {
-			delete(layerI1,i)
-		}
-	}
-}
