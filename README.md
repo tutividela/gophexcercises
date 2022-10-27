@@ -14,4 +14,7 @@
 
 
 ### Quiz Game
-Quiz Game excercise can be found at `/quizGame` . Quiz Game statement can be found at [Quiz Game](https://courses.calhoun.io/lessons/les_goph_01)
+Quiz Game excercise can be found at `/quizGame` . Quiz Game statement can be found at [Quiz Game](https://courses.calhoun.io/lessons/les_goph_04)
+
+### URL Shortener
+URL Shortener can be found at `/handler`. URL Shortener statement can be found at [URL Shortener]()
