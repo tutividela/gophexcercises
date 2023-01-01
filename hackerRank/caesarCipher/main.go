@@ -22,38 +22,48 @@ var (
 	Z_byteCode rune = 90
 	a_byteCode rune = 97
 	z_byteCode rune = 122
+	upperBody rune = (Z_byteCode-A_byteCode)
+	lowerBody rune = (z_byteCode-a_byteCode)
 )
 
 func caesarCipher(s string, k int32) string {
     // Write your code here
-	var cipher string
+	var (
+		cipher string
+		c rune
+	)
 	for _,p := range s {
 		if isSpecialCharacter(p) {
 			cipher = strings.Join([]string{cipher,string(p)},"")
 		}else {
 			if p >= a_byteCode && p <= z_byteCode {
-				entero := k / (z_byteCode-a_byteCode)
-				resto := k % (z_byteCode-a_byteCode)
-				c := p - entero + resto
-				if c > z_byteCode {
-					dif := c - z_byteCode
-					c = a_byteCode  + dif -1
-				}
+				c =cipherCharacter(a_byteCode,z_byteCode,p,k)
 				cipher =strings.Join([]string{cipher,string(c)},"")
 			}
 			if p >= A_byteCode && p <= Z_byteCode{
-				entero := k / (Z_byteCode-A_byteCode)
-				resto := k % (Z_byteCode-A_byteCode)
-				c := p - entero + resto
-				if c > Z_byteCode {
-					dif := c -Z_byteCode
-					c = A_byteCode  + dif -1
-				}
+				c= cipherCharacter(A_byteCode,Z_byteCode,p,k)
 				cipher =strings.Join([]string{cipher,string(c)},"")
 			}
 		}
 	}
 	return cipher
+}
+
+func cipherCharacter(firstCharacterRange , lastCharacterRange ,plainCharacter rune,k int32) rune{
+	var (
+		entero rune
+		resto rune
+		c rune
+	)
+	entero = k / (lastCharacterRange-firstCharacterRange) 
+	resto = k % (lastCharacterRange-firstCharacterRange)
+	c = plainCharacter - entero + resto
+	if c > lastCharacterRange {
+		dif := c - lastCharacterRange
+		c = firstCharacterRange  + dif -1
+	}
+		
+	return c
 }
 
 func isSpecialCharacter(p rune) bool {
